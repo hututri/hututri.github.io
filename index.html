@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="orobialeApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orobiale Photography Services</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #fafafa; }
+        header { background: #222; color: #fff; padding: 2rem 1rem; text-align: center; }
+        nav { background: #444; padding: 0.5rem; text-align: center; }
+        nav a { color: #fff; margin: 0 1rem; text-decoration: none; }
+        section { max-width: 900px; margin: 2rem auto; padding: 1rem; background: #fff; border-radius: 8px; }
+        h1, h2 { margin-top: 0; }
+        .services { display: flex; flex-wrap: wrap; gap: 2rem; }
+        .service { flex: 1 1 250px; background: #f0f0f0; padding: 1rem; border-radius: 6px; }
+        footer { background: #222; color: #fff; text-align: center; padding: 1rem; margin-top: 2rem; }
+        @media (max-width: 600px) {
+            .services { flex-direction: column; }
+        }
+    </style>
+</head>
+<body ng-controller="MainController">
+    <header>
+        <h1>Orobiale</h1>
+        <p>Capturing Moments, Creating Memories</p>
+    </header>
+    <nav>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <section id="services">
+        <h2>Our Photography Services</h2>
+        <div class="services">
+            <div class="service" ng-repeat="service in services">
+                <h3>{{service.name}}</h3>
+                <p>{{service.description}}</p>
+            </div>
+        </div>
+    </section>
+    <section id="about">
+        <h2>About Orobiale</h2>
+        <p>
+            Orobiale is a professional photography company dedicated to capturing your most precious moments. 
+            Our experienced photographers specialize in a wide range of services to meet your needs.
+        </p>
+    </section>
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form name="contactForm" ng-submit="submitForm()" novalidate>
+            <label>
+                Name:<br>
+                <input type="text" ng-model="contact.name" required>
+            </label><br><br>
+            <label>
+                Email:<br>
+                <input type="email" ng-model="contact.email" required>
+            </label><br><br>
+            <label>
+                Message:<br>
+                <textarea ng-model="contact.message" required></textarea>
+            </label><br><br>
+            <button type="submit" ng-disabled="contactForm.$invalid">Send</button>
+            <span ng-if="formSubmitted">Thank you for contacting us!</span>
+        </form>
+    </section>
+    <footer>
+        &copy; {{year}} Orobiale Photography Services. All rights reserved.
+    </footer>
+    <script>
+        angular.module('orobialeApp', [])
+            .controller('MainController', ['$scope', function($scope) {
+                $scope.year = new Date().getFullYear();
+                $scope.services = [
+                    { name: 'Wedding Photography', description: 'Beautifully capture your special day with our wedding packages.' },
+                    { name: 'Portrait Photography', description: 'Professional portraits for individuals, families, and groups.' },
+                    { name: 'Event Photography', description: 'Coverage for corporate events, parties, and more.' },
+                    { name: 'Product Photography', description: 'High-quality images to showcase your products.' }
+                ];
+                $scope.contact = {};
+                $scope.formSubmitted = false;
+                $scope.submitForm = function() {
+                    if ($scope.contactForm.$valid) {
+                        $scope.formSubmitted = true;
+                        $scope.contact = {};
+                        $scope.contactForm.$setPristine();
+                    }
+                };
+            }]);
+    </script>
+</body>
+</html>
